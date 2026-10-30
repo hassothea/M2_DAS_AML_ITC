@@ -1,0 +1,1326 @@
+---
+title: "I. Introduction to EDA & Descriptive Statistics"
+subtitle: "<br>Exploratory Data Analysis & Unsupervised Learning<br><br>
+[![](img/itc.png){width=125px}](https://itc.edu.kh/about-institute-of-technology-of-cambodia/){target='_blank'} &nbsp; &nbsp; &nbsp; [![](img/AMS_logo.png){width=200px}](https://itc.edu.kh/home-ams/){target='_blank'} <br>"
+author: "Lecturer: [Dr. HAS Sothea]{.blue}<br> Instructor: [Ms. UANN Sreyvi]{.blue}"
+---
+
+## About the course
+
+:::{style="font-size: 70%"}
+### 🎯 **Objective:**
+Equip you with
+
+- Essential `EDA` skills to handle, preprocess and uncover insights from data. 
+- Key `Unsupervised Learning` and `Multivariate Analysis` techniques to apply them to solve real-world problems with proper interpretation.
+
+### 📝 **Grading Criteria**
+
+| **`Criteria`** | Attendance | Quiz+labs | Midterm | Final | Project |
+|:---------------|:----------:|:-----------:|:------------:|:----------:|:-----------:|
+|**`Percentage`** | 10% | 20% | 20% | 20% | 30% |
+|
+
+### 💻 **Programming: ![](img/python.png){width=30px style="position: relative; bottom: -15px"} `Python`**
+
+:::{.vspace style="--space: -10px"}
+[![](img/jupyter.png){width=30px style="position: relative; bottom: -15px"} Jupyter Notebook](https://docs.jupyter.org/en/latest/){target="_blank"},  [![](img/colab.png){width=35px style="position: relative; bottom: -12px"} Google colab](https://colab.research.google.com/){target="_blank"}, [![](img/plt_logo.png){width=35px style="position: relative; bottom: -18px"} Matplotlib](https://matplotlib.org/){target="_blank"}, [![](img/sns_logo.svg){width=30px style="position: relative; bottom: -15px"} Seaborn](https://seaborn.pydata.org/){target="_blank"}
+:::
+:::
+
+<!-- [Note: This is a simple note for the slide.]{.slide-note} -->
+
+## Course materials
+:::{.r-fit-text}
+- [**Moodle & Webpage**]{.blue}: [[https://hassothea.github.io/I5_EDA_ITC/](https://hassothea.github.io/I5_EDA_ITC/){target='_blank'}]{style='font-size: 90%'}
+:::
+
+
+<iframe width="100%" height="70%" src="https://hassothea.github.io/I5_EDA_ITC/" frameborder="0" marginwidth="0" marginheight="0" style="border: none; max-width:100%; max-height:100vh" allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen> </iframe>
+
+
+<!--
+📋 Outline
+
+<br>
+
+- [Introduction to Exploratory Data Analysis]{.section .secbr} <br>
+
+- [Univariate Analysis]{.section .secbr} <br>
+
+- [Review of Descriptive Statistics]{.section .secbr}
+
+-->
+
+```{python}
+path0 = "D:/Sothea_PC/Teaching_AUPP/Data_Analytics/Courses/data"
+path_titanic = "/Users/hassothea/.cache/kagglehub/datasets/yasserh/titanic-dataset/versions/1"
+```
+
+# Introduction {background-color="#345a8b"}
+
+## Introduction
+:::{style="font-size: 75%"}
+
+- In 60s, someone said "[Garbage in, garbage out (GIGO)!]{.blue}".
+
+:::{.fragment .vspace style="--space: -5px"}
+![GIGO: Garbage In, Garbage Out.](img/gigo.png){#fig-gigo fig-align="center" width='50%'}
+:::
+
+:::{.incremental .vspace style="--space: -20px"}
+- This means that [low-quality]{.light-red} input (data) $\to$ [faulty output or result]{.light-red}!
+
+- [**Example:**]{.blue} problems with real-world data:
+    - Missing values in the dataset (e.g., missing salary in a survey).
+    - Outliers that can skew the analysis (e.g., extremely high or low values in clinical data).
+    - Inconsistent data entry (e.g., "Male", "male", "M").
+:::
+:::
+
+---
+
+### Introduction
+:::{.incremental style="font-size: 75%"}
+:::{.columns}
+:::{.column width="70%"}
+- [**Exploratory Data Analysis (EDA)**]{.blue} is all about getting curious about your data:
+    - [**Finding**]{.blue} out what are the problems.
+    - What [**patterns**]{.blue} you can find.
+    - What [**relationships**]{.blue} exist in the data.
+
+- It's the *1st step towards analysis and model building*. 
+:::
+:::{.column width="30%"}
+:::{.vspace style="--space: -60px"}
+![EDA is the key step in analyzing the data.](img/EDA.png){#fig-eda fig-align="center" height=350px}
+:::
+:::
+:::{.vspace style="--space: -80px"}
+- If done right, it can help you to
+    - [Clean]{.blue} the data without damaging the underlying patterns.
+    - [Formulate]{.blue} further questions and areas for investigation.
+    - [Uncover]{.blue} aspects of your data that you wouldn't have seen.
+    - [Select]{.blue} informative set of inputs for predictive tasks...
+:::
+:::
+:::
+
+---
+
+#### Goals of EDA
+:::{style="font-size: 80%"}
+EDA generally involves:
+
+:::{.vspace style="--space: -10px"}
+:::{.columns}
+:::{.column width="51%" .fragment}
+:::{style="font-size: 90%"}
+* [**Inspect**]{.light-blue} the data.
+* [**Detect**]{.light-blue} issues.
+* [**Uncover**]{.light-blue} patterns.
+* [**Find**]{.light-blue} new aspect for investigation.
+:::
+:::
+:::{.column width="49%" .fragment}
+:::{style="font-size: 87%"}
+* [**Prepare**]{.light-blue} for model building:
+  * **Check** assumptions.
+  * **Select** features.
+  * **Choose** appropriate methods.
+:::
+:::
+:::
+:::
+
+![](img/EDA_goal.png){fig-align="center" width=80% .fragment}
+
+:::
+
+---
+
+<!--
+
+#### Different Goals of EDA, different methods 
+:::{style="font-size: 80%"}
+:::{.column width="50%"}
+- Just like the **goal** may vary, so do the **techniques**. 
+
+:::{.incremental}
+- The EDA process generally involves:
+    - [**Data Preprocessing**]{.blue} and [**Inspection**]{.blue}
+    - Data [**Visualization**]{.blue}
+    - [**Descriptive**]{.blue} and [**Inferential Statistics**]{.blue}
+:::
+:::
+:::{.column width="50%"}
+
+![EDA Techniques](img/EDA_techniques.png){#fig-eda-techniques fig-align="left" width="450"}
+
+:::
+:::
+
+
+#### Different Goals of EDA, different methods
+:::{style="font-size: 80%" .incremental}
+:::{.column width="60%"}
+* [**Data inspection**]{.blue} is an important first step of any analysis. 
+* Technically, The primary motive of EDA is to
+    * Handling [**missing values**]{.light-red} of the dataset (a most common issue with every dataset)
+    * Handling the [**outliers**]{.light-red}
+    * Removing [**duplicate**]{.light-red} data
+    * Examine the [**data distribution**]{.light-red}
+    * Encoding the [**categorical variables**]{.light-red}
+    * [**Normalizing**]{.blue} and [**Scaling**]{.blue}...
+:::
+:::{.column width="40%"}
+![](img/inspection.png){fig-align="center"}
+:::
+:::
+
+-->
+
+---
+
+### Descriptive & Inferential Statistics
+
+:::{style="font-size: 80%"}
+* [**Statistics**]{.light-blue} is a branch of mathematics that deals with the **collection, analysis, interpretation, presentation, and organization** of **data**.
+
+:::{.fragment}
+* [**Descriptive statistics**]{.light-blue} focuses on summarizing the data using **statistical values** and **graphs** and is needed in EDA for 
+    - Visualize & understand the data distribution
+    - Detecting abnormality/problems in the data
+    - Discover pattern/trends...
+:::
+:::{.fragment}
+* [**Inferential Statistics**]{.blue} infers information analyzed using data to the population by using different hypothesis testing.
+:::
+:::
+
+---
+
+## Statistics
+:::{style="font-size: 95%"}
+![Descriptive vs Inferential Statistics.](img/Statistics.png){#fig-stats fig-align="center" width=75%}
+:::
+
+# Univariate Analysis {background-color="#345a8b"} 
+
+## Motivation
+### Consider [Titanic dataset](https://www.kaggle.com/datasets/yasserh/titanic-dataset){target="_blank"}
+
+:::{style='font-size:40%'}
+
+```{python}
+#| echo: true
+#| code-fold: true
+import pandas as pd                 # Import pandas package
+import seaborn as sns               # Package for beautiful graphs
+import matplotlib.pyplot as plt     # Graph management
+data = pd.read_csv(path_titanic + "/Titanic-Dataset.csv" ) # Import it into Python
+sns.set(style="whitegrid")          # Set grid background
+data.drop(columns=['PassengerId']).head()
+```
+
+:::
+:::{style="font-size:70%" .incremental}
+- [**First step**]{.blue} in analyzing data is [**understanding**]{.blue} each individual column.
+    - Did many people survive?
+    - Were there more female or male passengers?
+    - Does the data contain any anomalies or problems?
+:::
+
+
+## Data Types
+### [Quality]{.red} vs [Quantity](.blue)
+:::{.columns}
+:::{.column width="62%"}
+:::{style="font-size: 70%"}
+```{python}
+#| echo: true
+#| code-fold: true
+#| fig-align: center
+data[['Survived', 'Pclass', 'Age', 'Embarked']].head(3)    # Show 5 first rows
+```
+:::
+:::{.incremental style="font-size: 65%"}
+- Column `Embarked` is clearly different:
+    - Performing "$+$, $-$..." doesn't work!
+    - Comparing its values doesn't work either!
+- `Embarked` is a [**Qualitative**]{.red} or [**Categorical**]{.red} data.
+:::
+:::
+:::{.column width="38%"}
+:::{.incremental style="font-size: 65%"}
+- `Age` on the other hand is numerical:
+    - Age $50$ is older than $30$ (comparison is valid).
+    - Age $20$ is $5$ years younger than $25$ or $25-20=5$.
+- `Age` is a [**Quantitative**]{.blue} or [**Numerical**]{.blue} data.
+- How about the other two columns 😎?
+:::
+<!--
+:::{.fragment .up2}
+![](img/answer.jpeg){width="70%" fig-align="center"}
+:::
+-->
+:::
+:::
+
+<!--
+
+## Data Types
+### Quality vs Quantity
+:::{.columns}
+:::{.column width="50%" style="font-size: 70%"}
+[**Quantitative data**]{.blue .center}
+
+- Numerical values, **can be measured**,**quantified** or **computed**.
+- Often represent quantities including amount, volume, size...
+
+:::{.fragment}
+- There are **two main subcategories**:
+    - **Discrete**: countable or finite distinct values.
+        - Number of siblings: 0, 1,...
+        - Number of floors: 0, 1,...
+    - **Continuous**: can take any real values (negative, decimal...).
+        - Height: 1.75, 1.52...
+        - Age: 3, 10, 50...
+:::
+:::
+:::{.column width="50%" style="font-size: 70%" .fragment}
+[**Qualitative data**]{.red .center}
+
+- Descriptive, non-numerical, **no inherent order** and **cannot be computed**.
+- Often used to understand concepts, opinions, or experiences, groups, types...
+
+:::{.fragment}
+- There are **two main subcategories**:
+    - **Nominal (no order)**: 
+        - Gender: male, female 
+        - Color: [green]{.green}, [blue]{.blue}, [red]{.red}...
+    - **Ordinal (can be ordered)**: 
+        - Grade: A, B, C...
+        - Opinion: disagree, neutral, agree...
+:::
+:::
+:::
+
+-->
+
+```{python}
+path = "D:/Sothea_PC/Teaching_AUPP/Data_Analytics/Courses/data"
+```
+
+---
+
+### Summary
+
+:::{style="font-size: 95%"}
+![[Quantitative]{.blue} vs [Qualitative]{.red} data.](img/quan_qual.png){#fig-quan-qual fig-align="center" width="75%"}
+:::
+
+---
+
+### Challenge
+:::{.columns}
+:::{.column width="45%" style="font-size: 65%"}
+```{python}
+#| echo: true
+#| code-fold: true
+data[['Sex', 'SibSp', 'Parch', 'Fare']].head()
+```
+
+:::{.fragment}
+- [**Q1:**]{.red} Define type of these columns.
+
+:::{.vspace style="--space: -10px"}
+![](img/answer.jpeg){width="50%" fig-align="center"}
+:::
+:::
+:::
+:::{.column width="55%" style="font-size: 80%"}
+
+:::{.r-stack}
+:::{.fragment}
+::: {.border-table}
++----------+----------------------------------+-------------------------+
+|          | [**Quan**]{.blue}                | [**Qual**]{.red}        |
++==========+=================+================+=================+=======+
+|  Column  | Dis             | Cont           | Nomi            | Ordi  |
++----------+-----------------+----------------+-----------------+-------+
+|  `Sex`   |                 |                | [✅]{.fragment} |       |
++----------+-----------------+----------------+-----------------+-------+
+| `SibSp`  | [✅]{.fragment} |                |                 |       |
++----------+-----------------+----------------+-----------------+-------+
+| `Parch`  | [✅]{.fragment} |                |                 |       | 
++----------+-----------------+----------------+-----------------+-------+
+| `Fare`   |                 | [✅]{.fragment}|                 |       |
++----------+-----------------+----------------+-----------------+-------+
+:::
+:::
+
+:::{.fragment}
+
+<br>
+
+![](img/good_job.jpg){fig-align="center"}
+:::
+:::
+:::{.fragment}
+- Now, let's take a closer look!
+:::
+:::
+:::
+
+
+## [Qualitative]{.red} Data
+### Statistical values
+:::{.columns}
+:::{.column width="60%"}
+:::{style="font-size: 64%"}
+
+```{python}
+#| echo: true
+data[['Pclass', 'Survived', 'Embarked', 'Sex']].head(3)
+```
+
+:::{.incremental}
+- What [**values**]{.red} should we use to describe [qualitative]{.red} data?
+
+- [**Absolute Frequency:**]{.blue} Number of occurrences/counts of each category.
+
+- [**Relative Frequency:**]{.blue} proportion/percentage of each category.
+
+- [**Mode:**]{.blue} Category with highest frequency/count.
+:::
+:::
+:::
+:::{.column width="40%" .fragment}
+:::{style="font-size: 72%"}
+- Example:
+:::
+:::{style="font-size: 55%"}
+```{python}
+#| echo: true
+#| code-fold: true
+freq_tab = data[['Pclass']].value_counts().to_frame().round()
+freq_tab['proportion'] = data[['Pclass']].value_counts(normalize=True).round(2)
+freq_tab.T
+```
+:::
+
+---------
+
+:::{style="font-size: 65%"}
+```{python}
+#| echo: true
+#| code-fold: true
+freq_tab = data[['Sex']].value_counts().to_frame()
+freq_tab['proportion'] = data[['Sex']].value_counts(normalize=True).round(2)
+freq_tab.T
+```
+:::
+:::
+:::
+
+---
+
+<!--
+
+###  [Visualization]{.light-blue}
+:::{.columns}
+:::{.column width="50%"}
+:::{style="font-size: 65%"}
+:::{style="font-size: 70%"}
+```{python}
+#| echo: true
+data[['Pclass', 'Survived', 'Embarked', 'Sex']].head(5)
+```
+:::
+
+- What [**graph**]{.light-blue} should we use to present [qualitative]{.red} data?
+
+[⚠️ **Pie charts** can be challenging to read with numerous categories. They're harder to perceive when many categories have similar proportions.]{.slide-note}
+
+:::{.fragment fragment-index=1 .vspace style="--space: -20px"}
+- [**Countplot/Barplot:**]{.blue} Represent each [**count**]{.blue}/proportion by a bar.
+:::
+:::{.fragment fragment-index=2}
+- [**Pie chart:**]{.blue} Represent [**count/proportion**]{.blue} by circular slices, $$\theta_j=\frac{n_j}{n}\times 360^\circ\text{ for each category }j.$$
+:::
+:::
+:::
+:::{.column width="50%" .fragment fragment-index=1}
+:::{style="font-size: 70%"}
+- Example:
+:::
+:::{style="font-size: 50%"}
+```{python}
+#| echo: true
+import matplotlib.pyplot as plt
+import seaborn as sns  # For graph
+sns.set_style("white") # set background
+plt.figure(figsize=(5,3))
+ax = sns.countplot(data, 
+    x="Survived", 
+    palette="Set2") # create graph
+ax.set_title("Barplot of Survived") # add title
+ax.bar_label(ax.containers[0]) # add number to bars
+ax.bar_label(ax.containers[1]) # add number to bars
+plt.show() # Show graph
+```
+:::
+:::
+:::
+
+-->
+
+---
+
+###  [Visualization]{.light-blue}
+:::{.columns}
+:::{.column width="50%"}
+:::{style="font-size: 65%"}
+:::{style="font-size: 70%"}
+```{python}
+#| echo: true
+data[['Pclass', 'Survived', 'Embarked', 'Sex']].head(5)
+```
+:::
+
+- What [**graph**]{.light-blue} should we use to present [qualitative]{.red} data?
+
+:::{.fragment .vspace style="--space: -20px" fragment-index=1}
+- [**Countplot/Barplot:**]{.blue} Represent each [**count**]{.blue}/proportion by a bar.
+:::
+:::{.fragment .vspace style="--space: -20px" fragment-index=3}
+- [**Pie chart:**]{.blue} Represent [**count/proportion**]{.blue} by circular slices, $$\theta_j=\frac{n_j}{n}\times 360^\circ\text{ for each category }j.$$
+:::
+:::
+:::
+:::{.column width="50%"}
+:::{style="font-size: 70%" .fragment fragment-index=2}
+- Example:
+:::
+:::{.r-stack .fragment .fade-in fragment-index=2}
+:::{.fragment .fade-out fragment-index=3 style="font-size: 50%"}
+:::{.vspace style="--space: -30px"}
+```{python}
+#| echo: true
+#| eval: false
+import matplotlib.pyplot as plt
+import seaborn as sns  # For graph
+plt.figure(figsize=(4,2))
+ax = sns.countplot(data, 
+    x="Survived", 
+    palette="Set2") # create graph
+ax.set_title("Barplot of Survived") # add title
+ax.bar_label(ax.containers[0]) # add number to bars
+ax.bar_label(ax.containers[1]) # add number to bars
+plt.tight_layout()
+plt.show() # Show graph
+```
+
+```{python}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+import matplotlib.pyplot as plt
+import seaborn as sns  # For graph
+plt.figure(figsize=(4,3))
+ax = sns.countplot(data, 
+    x="Survived", 
+    palette="Set2") # create graph
+ax.set_title("Barplot of Survived") # add title
+ax.bar_label(ax.containers[0]) # add number to bars
+ax.bar_label(ax.containers[1]) # add number to bars
+# Target the active axes directly
+ax = plt.gca()
+
+# Hide the top and right lines of the box
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+
+# Ensure the left and bottom axes stay visible
+ax.spines['left'].set_visible(True)
+ax.spines['bottom'].set_visible(True)
+plt.show() # Show graph
+```
+:::
+:::
+:::{.fragment .fade-in fragment-index=3 style="font-size: 50%"}
+:::{.vspace style="--space: -5px"}
+```{python}
+#| echo: true
+#| fig-align: "center"
+import matplotlib.pyplot as plt
+import seaborn as sns  # For graph
+color_palette = sns.color_palette("Set2") # set color palette
+plt.figure(figsize=(5,4))
+tab = data['Embarked'].value_counts() # Compute 
+plt.pie(tab, labels=tab.index, 
+    autopct='%0.2f%%', 
+    colors=color_palette) # graph
+plt.title("Barplot of Pclass") # add title
+plt.show() # Show graph
+```
+:::
+:::
+:::
+:::
+:::
+
+[⚠️ **Pie charts** can be challenging when many categories have similar proportions.]{.slide-note .fragment fragment-index=4}
+
+---
+
+### Summary
+:::{style="font-size: 80%"}
+![Statistical values and graph for [qualitative]{.red} data.](img/qual.png){#fig-qual fig-align="center" width="90%"}
+:::
+
+## [Quantitative]{.blue} Data {auto-animate="true"}
+### Statistical values: Quantiles
+:::{style="font-size: 80%"}
+:::{.columns}
+:::{.column width="55%" .incremental}
+:::{.fragment style="font-size: 70%"}
+```{python}
+#| echo: true
+data[['Age', 'Fare', 'SibSp', 'Parch']].head(3)
+```
+:::
+
+- What [**values**]{.red} should we use to describe [quantitative]{.blue} data?
+
+- [**Quantiles:**]{.blue} For data sorted in **ascending order**, the [**cut points**]{.blue} divide the range into contiguous proportion intervals.
+
+:::
+:::{.column width="45%" .fragment .incremental}
+#### Different types of **quantile**:
+:::{.vspace style="--space: -10px" style="font-size: 80%"}
+- [**Percentiles:**]{.blue} **Values** that divide data into **100 equal parts**.
+- [**Quartiles:**]{.blue} The 25th (**Q1**), 50th ([**Q2**]{.red} or [**median**]{.blue}), and 75th ([**Q3**]{.green}) percentiles.
+
+![](img/percentiles.png){.fragment .vspace style="--space: -20px"}
+
+:::{.fragment .vspace style="--space: -20px"}
+:::{style="font-size: 80%"}
+```{python}
+data[['Fare', 'Age']].describe().T.drop(columns=['count', 'mean', 'std']).round(2)
+```
+:::
+:::
+:::
+:::
+:::
+:::
+
+---
+
+### Statistical values: Quartile computation
+:::{style="font-size: 80%"}
+:::{.columns}
+:::{.column width="55%"}
+:::{.callout-tip icon="false" style="font-size: 90%"}
+#### Method to find Quartiles:
+
+- Sort the data in **ascending order:** $X_1,...,X_n$. 
+
+:::{.r-stack .vspace style="--space: -10px"}
+
+![](img/seq_1_9.png)
+
+:::{.fragment fragment-index=1}
+![](img/seq_1_9_q2.png){.vspace style="--space: 17px"}
+:::
+
+:::{.fragment fragment-index=2}
+![](img/seq_1_9_q3.png){.vspace style="--space: 17px"}
+:::
+:::
+:::{.fragment fragment-index=1}
+- If $n$ is odd: $\color{red}{Q_2}=X_{(n+1)/2}$ "**middle term**".
+- If $n$ is even: $\color{red}{Q_2}=\frac{X_{(n/2)}+X_{(n/2)+1}}{2}$ "**middle value**".
+:::
+:::{.fragment fragment-index=2}
+- $Q_1$: the **middle point** of the **lower-half** data.
+- $\color{green}{Q_3}$: the [**middle point**]{.green} of the [upper-half]{.green} data.
+:::
+:::
+:::
+:::{.column width="45%"}
+#### Different types of **quantile**:
+:::{.vspace style="--space: -10px" style="font-size: 80%"}
+- [**Percentiles:**]{.blue} **Values** that divide data into **100 equal parts**.
+- [**Quartiles:**]{.blue} The 25th (**Q1**), 50th ([**Q2**]{.red} or [**median**]{.blue}), and 75th ([**Q3**]{.green}) percentiles.
+
+![](img/percentiles.png){.vspace style="--space: -20px"}
+
+:::{.vspace style="--space: -10px"}
+:::{style="font-size: 80%"}
+```{python}
+data[['Fare', 'Age']].describe().T.drop(columns=['count', 'mean', 'std']).round(2)
+```
+:::
+:::
+:::
+:::
+:::
+:::
+
+---
+
+### Statistical values: Mean/average {auto-animate="true"}
+:::{style="font-size: 80%"}
+:::{.columns}
+:::{.column width="55%"}
+:::{style="font-size: 65%"}
+```{python}
+#| echo: true
+data[['Age', 'Fare', 'SibSp', 'Parch']].head(3)
+```
+:::
+:::{.vspace style="--space: -10px"}
+:::{.vspace style="--space: -10px"}
+- [**Mean:**]{.light-blue} Average over all points:
+
+:::{.vspace style="--space: -10px"}
+[$$\color{blue}{\overline{X}=\frac{1}{n}\sum_{i=1}^nX_i=\frac{X_1+\dots+X_n}{n}}.$$]{style="font-size: 70%"}
+:::
+:::{.fragment fragment-index=2 .vspace style="--space: -30px"}
+- [**Remark**]{.red}: [**Mean**]{.light-blue} is sensitive and has tendency towards outliers. In such cases, the `median` (Q2) may provide a better measure of central tendency.
+:::
+:::
+:::
+:::
+:::{.column width="45%"}
+#### Different types of **quantile**:
+:::{.vspace style="--space: -10px" style="font-size: 80%"}
+- [**Percentiles:**]{.blue} **Values** that divide data into **100 equal parts**.
+- [**Quartiles:**]{.blue} The 25th (**Q1**), 50th ([**Q2**]{.red} or [**median**]{.blue}), and 75th ([**Q3**]{.green}) percentiles.
+
+:::{.r-stack}
+:::{.vspace style="--space: -32px"}
+![](img/percentiles.png)
+:::
+
+:::{data-id="percentiles2" .fragment fragment-index=2 .vspace style="--space: -32px"}
+![](img/percentiles2.png)
+:::
+:::
+:::{.vspace style="--space: -10px"}
+:::{.r-stack}
+:::{style="font-size: 80%" .fragment .fade-out fragment-index=2}
+```{python}
+data[['Fare', 'Age']].describe().T.drop(columns=['count', 'mean', 'std']).round(2)
+```
+:::
+:::{style="font-size: 80%" .fragment fragment-index=2}
+```{python}
+data[['Fare', 'Age']].describe().T.drop(columns=['count', 'std']).round(2)
+```
+:::{.fragment fragment-index=3}
+- **Fare**: Mean >> Q2 suggesting [extremely large outliers]{.light-red} (some passengers paid very high fares).
+:::
+:::
+:::
+:::
+:::
+:::
+:::
+:::
+
+---
+
+<!-- ### Statistical values: Quartile computation
+:::{style="font-size: 80%"}
+:::{.columns}
+:::{.column width="55%"}
+
+```{python}
+#| echo: true
+data[['Age', 'Fare', 'SibSp', 'Parch']].head(3)
+```
+
+
+> [**Median** (**Q2**)]{.light-red} is a value that describe [**Measure of Central Tendency**]{.light-red}.
+
+:::{.fragment}
+- [**Mean:**]{.light-blue} Average value of all data points:
+
+:::{style="font-size: 80%"}
+$$\color{blue}{\overline{X}=\frac{1}{n}\sum_{i=1}^nX_i=\frac{X_1+\dots+X_n}{n}}.$$
+:::
+:::
+:::
+:::{.column width="45%".fragment .incremental}
+#### Examples:
+![](img/percentiles2.png){.up1}
+
+```{python}
+#| echo: true
+mean = data[['Age','Fare']].mean()\
+                        .to_frame()
+mean.columns = ['Mean']
+mean.T
+```
+
+:::{style="font-size: 90%"}
+- The average age of passengers was around $30$ years old.
+
+- In average, passengers spent approximately $£32$ in fare.
+:::
+:::
+:::
+:::
+
+-->
+
+### Statistical values: Variance/Std {auto-animate="true"}
+:::{style="font-size: 80%"}
+:::{.columns}
+:::{.column width="55%"}
+:::{style="font-size: 65%"}
+```{python}
+#| echo: true
+data[['Age', 'Fare', 'SibSp', 'Parch']].head(3)
+```
+:::
+:::{.vspace style="--space: -5px"}
+:::{style="font-size: 90%"}
+- There are [**two main Measures**]{.light-red} of [**Dispersion**]{.light-red} for describing how data points are spread out from the [**Mean**]{.blue}.
+:::
+:::{.r-stack .vspace style="--space: -20px"}
+:::{.fragment .fade-in-then-out fragment-index=1 style="font-size: 90%"}
+- [**Sample variance:**]{.blue} average of squared distances of data points from the [**Mean**]{.blue}.
+
+:::{.vspace style="--space: -40px"}
+[$$\color{blue}{\widehat{\sigma}^2=\frac{1}{n-1}\sum_{i=1}^n(X_i-\overline{X})^2}.$$]{style="font-size: 80%"}
+:::
+:::
+:::{.fragment fragment-index=2 style="font-size: 90%"}
+:::{.vspace style="--space: -28px"}
+- [**Sample standard deviation (std):**]{.blue} Just the square root of [**Variance**]{.blue}.
+
+:::{.vspace style="--space: -30px"}
+[$$\color{blue}{\widehat{\sigma}=\sqrt{\widehat{\sigma}^2}=\sqrt{\frac{1}{n-1}\sum_{i=1}^n(X_i-\overline{X})^2}}.$$]{style="font-size: 75%"}
+:::
+:::
+:::
+:::
+:::
+:::
+:::{.column width="45%"}
+#### Examples:
+
+```{python}
+#| echo: false
+import numpy as np
+import plotly.express as px
+# Assuming 'data' is already defined earlier in your script
+df1 = pd.DataFrame({
+    'x' : list(data['Age']+data['Age'].mean()*0.7) + [data['Age'].mean()*1.7, data['Age'].median()*1.7] +\
+          list(data['Age'].values*1.72) +  [data['Age'].mean()*1.7, data['Age'].median()*1.7],
+    'y': list(np.random.normal(1, 0.01, size=data.shape[0]+2)) +\
+         list(np.random.normal(2, 0.01, size=data.shape[0]+2)),
+    'Variable': list(['Variable 1']*data.shape[0]) + ['Mean 1', 'Median 1'] + list(['Variable 2']*data.shape[0]) + ['Mean 2', 'Median 2']
+})
+
+# 1. Calculate Variance and Std Dev (filtering out the Mean/Median points)
+var1 = df1[df1['Variable'] == 'Variable 1']['x'].var()
+std1 = df1[df1['Variable'] == 'Variable 1']['x'].std()
+
+var2 = df1[df1['Variable'] == 'Variable 2']['x'].var()
+std2 = df1[df1['Variable'] == 'Variable 2']['x'].std()
+
+# 2. Find the max X value to align the text neatly on the right side
+text_x_pos = df1['x'].max()
+
+# 3. Create the figure
+fig = px.scatter(
+    df1, x='x', y='y', color='Variable',
+    symbol='Variable', symbol_map={'Variable 1': 'circle', 'Mean 1': 'x', 'Median 1': 'diamond', 'Variable 2': 'circle', 'Mean 2': 'x', 'Median 2': 'diamond'},
+    title="Dot plot of Variable 1 and Variable 2"
+)
+
+# 4. Add Annotations for Variable 1 (y-level is roughly 1)
+fig.add_annotation(
+    x=text_x_pos, 
+    y=1,
+    text=f"<b>Var:</b> {var1:.2f}<br><b>Std:</b> {std1:.2f}",
+    showarrow=False,
+    xanchor="left",
+    yshift=20, # Shift slightly up so it doesn't overlap the dots
+    font=dict(size=10, color="#1f77b4") # Match plotly's default blue
+)
+
+# 5. Add Annotations for Variable 2 (y-level is roughly 2)
+fig.add_annotation(
+    x=text_x_pos, 
+    y=2,
+    text=f"<b>Var:</b> {var2:.2f}<br><b>Std:</b> {std2:.2f}",
+    showarrow=False,
+    xanchor="left",
+    yshift=20,
+    font=dict(size=10, color="#d62728") # Match plotly's default red
+)
+
+# 6. Update layout (increased width and right margin to fit the text)
+fig.update_layout(
+    height=220, 
+    width=400, # Widened slightly from 400 to fit annotations
+    margin=dict(r=80) # Add padding to the right
+)
+
+fig.show()
+```
+
+:::{.r-stack}
+:::{.fragment .fade-in-then-out fragment-index=1}
+:::{.vspace style="--space: -10px" style="font-size: 63%"}
+```{python}
+#| echo: true
+var = data[['Age','Fare']].var().to_frame().round(5)
+var.columns = ['Var']
+var.T
+```
+:::
+:::{style="font-size: 90%"}
+- Large variance means that [**data points are widely spread out from the Mean**]{.blue}.
+:::
+:::
+:::{.fragment .fade-in-then-out fragment-index=2}
+:::{.vspace style="--space: -10px" style="font-size: 63%"}
+```{python}
+#| echo: true
+std = data[['Age','Fare']].apply(['var', 'std'])
+std
+```
+:::
+:::{style="font-size: 90%"}
+- [**Std**]{.blue} is more interpretable than variance because it has the same unit as $X_i$.
+:::
+:::
+:::{.fragment .fade-in fragment-index=3}
+:::{.vspace style="--space: -10px"}
+
+![Intuition of Variance and Standard Deviation.](img/var.mp4){#video-var fig-align="center"}
+
+:::
+:::
+:::
+:::
+:::
+:::
+
+---
+
+<!--
+
+:::{style="font-size: 80%"}
+:::{.columns}
+:::{.column width="55%"}
+
+```{python}
+#| echo: true
+data[['Age', 'Fare', 'SibSp', 'Parch']].head(3)
+```
+
+> [**Two main Measure**]{.light-red} of [**dispersion**]{.light-red}:
+
+- [**Sample standard deviation:**]{.blue} Just the square root of [**Variance**]{.blue}.
+
+:::{style="font-size: 80%"}
+$$\color{blue}{\widehat{\sigma}=\sqrt{\widehat{\sigma}^2}=\sqrt{\frac{1}{n-1}\sum_{i=1}^n(X_i-\overline{X})^2}}.$$
+:::
+:::
+:::{.column width="45%"}
+#### Examples:
+![](img/percentiles3.png){.up1}
+
+```{python}
+#| echo: true
+std = data[['Age','Fare']]\
+        .apply(['var', 'std'])
+std
+```
+
+:::{style="font-size: 80%"}
+- Large standard deviation (**Std**) means [**data points are spread out widely from the Mean**]{.blue}.
+    - [**Std**]{.blue} has the same unit as $X_i$.
+:::
+:::
+:::
+:::
+
+-->
+
+### Statistical Summary
+:::{style="font-size: 80%"}
+:::{.columns}
+:::{.column width="55%"}
+:::{style="font-size: 70%"}
+```{python}
+data[['Age', 'Fare', 'SibSp', 'Parch']].head(3)
+```
+:::
+:::{style="font-size: 80%" .incremental}
+> [**Statistical summary**]{.blue} uses all key values to help us understand how the data is distributed and detect any potential problems with it.
+
+- Where the data is concentrated (**mean/median**)?
+- How spread out it is (**var/std**)?
+- Any extreme values (**mean vs median**)?
+- Any invalid values (**min/max**)?
+:::
+:::
+:::{.column width="45%" .fragment}
+#### Examples:
+![](img/percentiles3.png){.up1}
+
+:::{style="font-size: 68%"}
+```{python}
+#| echo: true
+data[['Age','Fare']]\
+        .describe().drop('count')  # for summary
+```
+:::
+:::
+:::
+:::
+
+---
+
+### [Visualization: Boxplot]{.light-blue}
+:::{style="font-size: 80%"}
+:::{.columns}
+:::{.column width="50%"}
+:::{style="font-size: 80%"}
+```{python}
+data[['Age', 'Fare', 'SibSp', 'Parch']].head(7)
+```
+:::
+
+![](img/boxplot.svg){fig-align="center"}
+:::
+:::{.column width="50%"}
+:::{.vspace style="--space: -20px" .incremental}
+:::{style="font-size: 80%"}
+- Boxplots describe the data distribution using [**Quartiles**]{.blue} and the [**range**]{.blue} where data normally fall within:
+    - [**Lower**]{.blue} and [**upper part of the box**]{.blue} are $Q_1$ and $\color{green}{Q_3}$. 
+    - [**Median**]{.blue} $\color{red}{Q_2}$ is the middle line.
+    - [**Interquartile range:**]{.blue} $\text{IQR}=\color{green}{Q_3}-Q_1$ (gap of $50\%$ most important part of the data).
+    - [**Range:**]{.blue} [$[Q_1-1.5\text{IQR},\color{green}{Q_3}+1.5\text{IQR}]$]{style="font-size: 80%"}. If the data are [**normally distributed**](https://en.wikipedia.org/wiki/Normal_distribution){target="_blank"}, $99.3\%$ of data fall within this range.
+    - [**Outliers:**]{.blue} data points that [**fall outside**]{.light-red} of the range.
+:::
+:::
+:::
+:::
+:::
+
+---
+
+### [Visualization: Boxplot (Example)]{.light-blue}
+:::{style="font-size: 80%"}
+:::{.columns}
+:::{.column width="50%"}
+:::{style="font-size: 80%"}
+```{python}
+data[['Age', 'Fare', 'SibSp', 'Parch']].head(6)
+```
+:::
+
+:::{style="font-size: 80%"}
+```{python}
+#| echo: true
+#| code-fold: true
+#| fig-align: "center"
+import plotly.express as px
+fig = px.box(data, x="Fare")
+fig.update_layout(height=200,
+                  width=450,
+                  title="Boxplot of Fare")
+fig.show()
+```
+:::
+:::
+:::{.column width="50%"}
+:::{.vspace style="--space: -20px"}
+:::{style="font-size: 80%"}
+:::{.r-stack}
+:::{.fragment .fade-out fragment-index=1}
+- Boxplots describe the data distribution using [**Quartiles**]{.blue} and the [**range**]{.blue} where data normally fall within:
+    - [**Lower**]{.blue} and [**upper part of the box**]{.blue} are $Q_1$ and $\color{green}{Q_3}$. 
+    - [**Median**]{.blue} $\color{red}{Q_2}$ is the middle line.
+    - [**Interquartile range:**]{.blue} $\text{IQR}=\color{green}{Q_3}-Q_1$ (gap of $50\%$ most important part of the data).
+    - [**Range:**]{.blue} [$[Q_1-1.5\text{IQR},\color{green}{Q_3}+1.5\text{IQR}]$]{style="font-size: 80%"}. If the data are [**normally distributed**](https://en.wikipedia.org/wiki/Normal_distribution){target="_blank"}, $99.3\%$ of data fall within this range.
+    - [**Outliers:**]{.blue} data points that [**fall outside**]{.light-red} of the range.
+:::
+:::{.fragment fragment-index=1 .incremental}
+- Fares range from $£0$ to maximum fare of $£512.33$.
+- $Q_1=£7.9$ indicating that around $25\%$ of passengers spent less than $£7.9$ to get to the ship.
+- $\color{red}{Q_2}=£14.45$ (**Median**): around $50\%$ spent less than $£14.45$.
+- $\color{green}{Q_3}=£31$: around $75\%$ spent less than $£31$.
+- [**Outliers**]{.blue}: Passengers who spent more than the upper fence ($£65$), with the largest fare of $£512.33$.
+:::
+:::
+:::
+:::
+:::
+:::
+:::
+
+---
+
+### Visualization: Histogram
+:::{style="font-size: 70%"}
+:::{.columns}
+:::{.column width="55%"}
+
+```{python}
+#| echo: true
+#| code-fold: true
+#| fig-align: "center"
+import plotly.express as px
+
+# Calculate the mean and median
+mean_age = data["Age"].mean()
+median_age = data["Age"].median()
+
+# Create the base histogram
+fig = px.histogram(data, x="Age")
+
+# Add a vertical dashed line for the Mean
+fig.add_vline(
+    x=mean_age, 
+    line_dash="dash", 
+    line_color="red", 
+    annotation_text=f"Mean: {mean_age:.1f}", 
+    annotation_position="top right"
+)
+
+# Add a vertical dashed line for the Median
+fig.add_vline(
+    x=median_age, 
+    line_dash="dash", 
+    line_color="green", 
+    annotation_text=f"Median: {median_age:.1f}", 
+    annotation_position="top left"
+)
+
+# Apply your layout settings
+fig.update_layout(
+    height=220, 
+    width=500, 
+    title="Histogram of Age"
+)
+
+fig.show()
+```
+
+- A histogram is constructed by:
+    - Defining a grid range of bins: $B_1, \dots, B_N$.
+    - The height of each bar represents the **count/frequency** of $X_i$ values that fall within the corresponding bin.
+
+:::
+:::{.column width="45%"}
+:::{style="font-size: 90%" .fragment}
+
+[**Mathematical definition of histogram**]{.blue}
+
+- Define bins: $B_1,\dots, B_N$.
+- For any $x$ such that $x\in B_k$ for some $k$,
+
+$$\text{hist}(x)=\sum_{i=1}^n\mathbb{1}_{\{X_i\in B_k\}}.$$
+
+where $\mathbb{1}_{\{X_i\in B_k\}}$ is an indicator function that equals $1$ if $X_i$ falls within the bin $B_k$, and $0$ otherwise.
+
+:::
+:::
+:::
+:::
+
+---
+
+### Visualization: Kernel Density Plot (KDE)
+
+:::{style="font-size: 70%"}
+:::{.columns}
+:::{.column width="55%"}
+:::{data-id="boxplot1" style="font-size: 90%"}
+```{python}
+#| echo: true
+#| code-fold: true
+#| fig-align: "center"
+import plotly.figure_factory as ff
+age = [data[['Age']].dropna().values.reshape(-1)]
+group_labels = ['distplot']
+fig = ff.create_distplot(age, group_labels=group_labels, bin_size=1.9)
+fig.update_layout(height=220, 
+                  width=500, 
+                  title="Histogram of Age")
+fig.show()
+```
+:::
+
+- A **Kernel Density Plot** is a smooth, continuous version of a **histogram**.
+- It describes the relative frequency of observations over ranges of values.
+- It has nicer mathematical properties than histograms.
+:::
+
+:::{.column width="45%"}
+:::{style="font-size: 90%" .fragment}
+[**Mathematical definition of KDE**]{.blue}
+
+- If $K$ is a smooth kernel function, for example: $K(x)=e^{-x^2/2}$.
+- For a given $h>0$ and for any $x$:
+
+$$\text{kde}(x)=\frac{1}{nh}\sum_{i=1}^nK\Big(\frac{x-X_i}{h}\Big).$$
+
+------
+
+- **Kernel density plot** conveys similar information as **histograms**.
+- It highlights common ranges of values and patterns in the data.
+
+:::
+:::
+:::
+:::
+
+---
+
+### Summary
+:::{.columns}
+:::{.column width="70%"}
+![](img/quan.png){fig-align="center"}
+:::
+:::{.column width="30%"}
+:::{style="font-size: 70%" .incremental}
+- [**Univariate analysis**]{.blue} aims at **describing**, **understanding** and **detecting** potential [problems]{.red} in the data by looking at each variable separately.
+- [**Descriptive statistics**]{.blue} and [**visualization**]{.blue} are the two main tools for univariate analysis.
+:::
+:::
+:::
+
+---
+
+### [Qualitative]{.red} columns of [Titanic Dataset](https://www.kaggle.com/datasets/yasserh/titanic-dataset){target="_blank"}
+:::{.columns}
+:::{.column width="40%" style="font-size: 80%"}
+
+```{python}
+#| echo: true
+#| code-fold: true
+qual_var = ['Survived', 'Pclass', 'Sex']
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+fig = make_subplots(
+    rows=3, cols=1, 
+    specs=[[{"type": "bar"}], [{"type": "bar"}], [{"type": "bar"}]],
+    subplot_titles=("Barplot of Survived", "Barplot of Pclass ", "Barplot Sex"))
+for i, va in enumerate(qual_var):
+    cnt = data[va].value_counts()
+    if i == 0:
+        fig.add_trace(
+            go.Bar(x=list(cnt.index.astype(str)), y=list(cnt.values), name=va), col=1, row=i+1)
+    else:
+        fig.add_trace(
+            go.Bar(x=list(cnt.index.astype(object)), y=list(cnt.values), name=va), col=1, row=i+1)
+fig.update_layout(height=450, width=450)
+fig.show()
+```
+:::
+:::{.column width="60%" style="font-size: 80%"}
+
+```{python}
+#| echo: true
+#| code-fold: true
+fig = make_subplots(
+    rows=3, cols=1, 
+    specs=[[{"type": "pie"}], [{"type": "pie"}], [{"type": "pie"}]],
+    subplot_titles=("Pie chart of Survived", "Pie chart of Pclass ", "Pie chart Sex"))
+for i, va in enumerate(qual_var):
+    cnt = data[va].value_counts()
+    fig.add_trace(go.Pie(labels=list(cnt.index.astype(object)), values=list(cnt.values)), col=1, row=i+1)
+fig.update_layout(height=450, width=450)
+fig.show()
+```
+:::
+:::
+
+
+---
+
+### [Quantitative]{.blue} columns
+:::{style="font-size: 80%"}
+
+```{python}
+#| echo: true
+#| code-fold: true
+quan_var = ['Age', 'SibSp', 'Parch', 'Fare']
+cols = ['#C96451', '#80C96F', '#6B7FDB', '#C07EDE']
+fig = make_subplots(
+    rows=2, cols=4,
+    subplot_titles=("Distribution of Age", "Distribution of Parch", "Distribution of SibSp", "Distribution of Fare", "","","",""))
+for i, va in enumerate(quan_var):
+    fig.add_trace(
+        go.Box(x=data[va].values, name=va, marker_color = cols[i]), col=i+1, row=1)
+    fig.add_trace(
+        go.Histogram(x=data[va].values, name=va, marker_color = cols[i]), col=i+1, row=2)
+fig.update_layout(height=450, width=1000)
+fig.show()
+```
+:::
+
+---
+
+### Quantitative columns (log scale)
+:::{style="font-size: 80%"}
+
+```{python}
+#| echo: true
+#| code-fold: true
+quan_var = ['Age', 'SibSp', 'Parch', 'Fare']
+cols = ['#C96451', '#80C96F', '#6B7FDB', '#C07EDE']
+fig = make_subplots(
+    rows=2, cols=4,
+    subplot_titles=("Distribution of Age", "Distribution of Parch", "Distribution of SibSp", "Distribution of log(Fare)", "","","",""))
+for i, va in enumerate(quan_var):
+    fig.add_trace(
+        go.Box(x=data[va].values, name=va, marker_color = cols[i]), col=i+1, row=1)
+    fig.add_trace(
+        go.Histogram(x=data[va].values, name=va, marker_color = cols[i]), col=i+1, row=2)
+fig.update_layout(height=450, width=1000)
+fig.update_xaxes(type="log", row=1, col=4)
+fig.update_yaxes(type="log", row=2, col=4)
+fig.show()
+```
+:::
+
+
+## More on Descriptive Statistics
+<br><br><br><br>
+
+:::{.r-fit-text}
+[📄 Review on descriptive statistics](https://hassothea.github.io/EDA_ITC/Slides/Review_descriptive_statistics.pdf){target="_blank"}.
+:::
+
+## {background-image="img/end_page.jpg" background-opacity="0.3" .unlisted .unnumbered .no-header}
+
+:::{.center}
+
+🥳 [**Yeahhhh....**]{.blue}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+[**Party time...**]{.blue} 🥂
+:::
