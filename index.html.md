@@ -51,9 +51,12 @@ Welcome to the [**Advanced Machine Learning**]{.blue} course! This course is des
 
 | **Note**: The following table of contents will be progressively updated according to the course advancement. **To covert `html` slide to `PDF`, you can simply just click on the slide then press letter `E` on your keyboard then save the rendered `PDF` slide**.
 
-| Topic                | TP    | Solution | Remark         |
-|:---------------------|:------|:---------|:---------------|
-| 1 | - | - | - |
+| Topic                | TP    | Submission | Remark         |
+|:---------------------|:------|:-----------|:---------------|
+| [0.1 EDA Review](https://hassothea.github.io/M1_DAS_EDA_ITC/docs/01-Intro-eda-and_univarate-analysis.html){target="_blank"} | ...loading | ...loading | ...loading |
+| [0.2 Data Preprocessing](https://hassothea.github.io/M1_DAS_EDA_ITC/docs/02-bivariate-analysis.html){target="_blank"} | ...loading | ...loading | ...loading |
+| [1. Naive Bayes Classifier](https://hassothea.github.io/M2_DAS_AML_ITC/docs/01-nbc.html){target="_blank"} | ...loading | ...loading | ...loading |
+|
 
 <!--](https://hassothea.github.io/EDA_ITC/TPs/TP3_Data_Preprocessing.html){target="_blank"} | [TP3-solution](https://hassothea.github.io/EDA_ITC/Solutions/TP3_Data_Preprocessing_sol.html){target="_blank"} | ✅ Completed | -->
 
