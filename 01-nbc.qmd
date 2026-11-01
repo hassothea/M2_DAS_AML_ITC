@@ -601,7 +601,7 @@ plt.show()
 ![](./img/conf_mat.jpg){width="350px"}
 
 :::{.vspace style="--space: -25px"}
-:::{style="font-size: 80%"}
+:::{style="font-size: 75%"}
 - $\color{purple}{\text{Precision}}=\frac{\color{CornflowerBlue}{\text{TP}}}{\color{CornflowerBlue}{\text{TP}}+\color{purple}{\text{FP}}}$
 - $\color{Tan}{\text{Recall}}=\frac{\color{CornflowerBlue}{\text{TP}}}{\color{CornflowerBlue}{\text{TP}}+\color{Tan}{\text{FN}}}$
 - $\color{ForestGreen}{\text{F1-score}}=\frac{2.\color{purple}{\text{Precision}}.\color{Tan}{\text{Recall}}}{\color{purple}{\text{Precision}}+\color{Tan}{\text{Recall}}}$.
@@ -635,11 +635,13 @@ fig.add_trace(go.Surface(x = x,
                         name = "Average",
                         colorscale = "Electric",
                         showscale = False))
+avg = (0.2 + 0.9)/2
+f1 = 2*0.2*0.9/(0.2+0.9)
 fig.add_trace(
     go.Scatter3d(
-        x = [0.2, 0.2],
-        y = [0.9, 0.9],
-        z = [0, 1],
+        x = [0.2] * 4,
+        y = [0.9] * 4,
+        z = [0, avg, f1, 1],
         mode="markers + lines",
         showlegend=False,
         marker=dict(
@@ -670,7 +672,7 @@ fig.show()
 
 ---
 
-### Receiver Operating Characteristic Curve (ROC)
+### Receiver Operating Characteristic (ROC) Curve
 
 :::{.columns}
 :::{.column width="40%"}
@@ -716,15 +718,17 @@ pl_1.show()
 
 ---
 
-### Receiver Operating Characteristic Curve (ROC)
+### Receiver Operating Characteristic (ROC) Curve
 
 :::{.columns}
 :::{.column width="40%"}
 ![](./img/conf_mat_roc.jpg){width="350px"}
 
+:::{.vspace style="--space: -15px"}
 ::: {.callout-tip appearance="simple" icon=false}
 $\bullet$ ROC $=\{($[FPR]{style="color:red"}$_{\delta}$,[TPR]{style="color:#EBB31D;"}$_{\delta}):\delta\in[0,1]\}$. <br> 
 $\bullet$ [Better]{style="color:#20A011;"} model = [Larger]{style="color:#20A011;"} Area Under the Curve (AUC).
+:::
 :::
 :::
 
@@ -781,6 +785,18 @@ pl_2.show()
 ![](./img/conf_mat_roc.jpg){width="350px"}
 
 :::
+:::
+
+---
+
+### Summary metrics
+:::{style="font-size: 80%" .incremental}
+- On imbalanced data, accuracy does not nessarily reflect the performance of a model.
+- [**Precision**]{style="color:purple"} is used to control the number of false positives.
+- [**Recall**]{style="color:#EBB31D;"} is used to control the number of false negatives.
+- [**F1-score**]{style="color:green"} is the harmonic mean that balances [**Precision**]{style="color:purple"} and [**Recall**]{style="color:#EBB31D;"}.
+- After building the model, one can tune the threshold $\delta$ to control the balance between [**Precision**]{style="color:purple"} and [**Recall**]{style="color:#EBB31D;"} using ROC curve. 
+- **AUC** (Area Under the Curve) is a single metric that summarizes the performance of a model across all thresholds. It highlights how well the model can distinguish between classes at any arbitrary threshold.
 :::
 
 ---

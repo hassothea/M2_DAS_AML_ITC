@@ -1,0 +1,39 @@
+# ignore everything
+*
+
+# Always keep .gitignore
+!/.gitignore
+
+# Root files/folders to keep
+!/README.md
+!/index.html
+!/index_files/
+!/index_files/**
+!/img/
+!/img/**
+
+# Keep docs, except generated/unwanted files
+!/docs/
+!/docs/**
+
+# Ignore specific generated docs files
+/docs/index.html
+/docs/index_files/
+/docs/temporary/
+/docs/.DS_Store
+
+# Other folders
+!/TPs/
+!/TPs/**
+/TPs/*sol.ipynb
+
+# Quarto
+/.quarto/
+/_site/
+
+# Lab solutions
+/Labs/Lab*/*-solution.ipynb
+
+# Jupyter
+.ipynb_checkpoints/
+**/*.quarto_ipynb
