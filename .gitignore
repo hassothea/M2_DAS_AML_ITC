@@ -37,3 +37,5 @@
 # Jupyter
 .ipynb_checkpoints/
 **/*.quarto_ipynb
+
+**/.DS_Store
